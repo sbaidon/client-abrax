@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-axios.defaults.baseURL = 'http://localhost:9090/api/v1';
+axios.defaults.baseURL = 'https://api-abraxas.herokuapp.com/api/v1';
 
 export default {
   getTodos() {
