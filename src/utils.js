@@ -1,3 +1,6 @@
 export function timefy(seconds) {
-  return `${Math.floor(seconds / 60)}:${seconds % 60 >= 10 ? seconds % 60 : `0${seconds % 60}`}`;
+  const minutes = Math.floor(seconds / 60);
+  const remainingSeconds = seconds % 60;
+
+  return `${minutes}:${remainingSeconds >= 10 ? remainingSeconds : `0${remainingSeconds}`}`;
 }

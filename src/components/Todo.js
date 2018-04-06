@@ -3,17 +3,23 @@ import { timefy } from '../utils';
 
 export default function todo(props) {
   return (
-    <div className="todo">
+    <div className="todo ba b--blue">
+      <div className="contols">
+        <button onClick={() => props.reorderTodo(props.todo, -1)}>&uarr;</button>
+        <button onClick={() => props.reorderTodo(props.todo, 1)}>&darr;</button>
+      </div>
       <p>Name: {props.todo.name}</p>
       <p>Description: {props.todo.description}</p>
       {props.todo.timeTaken !== undefined ? (
-        <p>Tiempo tomado: {timefy(props.todo.timeTaken)}</p>
+        <p>Time taken: {timefy(props.todo.timeTaken)}</p>
       ) : (
-        <p>Tiempo total: {timefy(props.todo.time)}</p>
+        <p>Total time: {timefy(props.todo.time)}</p>
       )}
-      <p>Tiempo restante: {timefy(props.todo.remainingTime)}</p>
-      <button onClick={props.deleteTodo}>Delete</button>
-      <button onClick={props.updateTodo}>Update</button>
+      <p>Remaining time: {timefy(props.todo.remainingTime)}</p>
+      <div className="controls">
+        <button onClick={props.deleteTodo}>Delete</button>
+        <button onClick={props.updateTodo}>Update</button>
+      </div>
     </div>
   );
 }

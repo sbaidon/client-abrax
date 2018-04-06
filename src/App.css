@@ -7,15 +7,13 @@
   grid-auto-flow: column;
   grid-gap: 20px;
   justify-content: space-around;
-  align-items: center;
   padding: 20px;
   text-align: left;
 }
 
 .App-main {
-  max-height: 80vh;
+  min-height: 80vh;
   padding: 20px;
-  overflow-y: scroll;
 }
 
 .App-title {
@@ -48,8 +46,57 @@
 
 .todo {
   display: grid;
-  color: black;
+  padding: 10px;
+  margin: 10px;
+}
+
+.graph-container {
+  display: grid;
+  justify-content: center;
+}
+
+.main-controls {
+  display: grid;
+  grid-gap: 20px;
+}
+
+.controls {
+  display: flex;
+  justify-content: center;
+  flex-flow: row wrap;
+}
+
+.controls button {
+  flex: 0 1 50%;
+  margin: 10px;
+}
+
+button {
+  background-color: white;
   border: 1px solid black;
+  color: black;
+}
+
+button:hover {
+  background-color: #96ccff;
+  color: white;
+  transition: all 0.3s;
+  border: 1px solid white;
+}
+
+.timer {
+  text-align: center;
+  height: 100px;
+  width: 100px;
+  border-radius: 50%;
+  display: grid;
+  justify-content: center;
+  align-items: center;
+}
+
+.custom-time {
+  display: grid;
+  grid-auto-flow: column;
 }
 
 @keyframes App-logo-spin {

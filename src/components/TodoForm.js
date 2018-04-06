@@ -22,7 +22,7 @@ export default function TodoForm(props) {
       <label htmlFor="name">Nombre</label>
       <input required={true} name="name" type="text" />
       <label htmlFor="description">Descripcion</label>
-      <input required={true} name="description" type="text" />
+      <textarea required={true} name="description" type="text" />
       <label htmlFor="time">Time</label>
       {time}
       <button type="submit" name="send">

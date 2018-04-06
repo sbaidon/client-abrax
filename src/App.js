@@ -1,12 +1,16 @@
 import React, { Component } from 'react';
 import { ToastContainer, toast } from 'react-toastify';
+import Modal from 'react-modal';
+
 import TodoForm from './components/TodoForm';
 import UpdateTodoForm from './components/UpdateTodoForm';
 import TodoList from './components/TodoList';
 import Timer from './components/Timer';
-import './App.css';
+import Graph from './components/Graph';
+
 import api from './api';
-import Modal from 'react-modal';
+import './App.css';
+import 'tachyons/css/tachyons.min.css';
 
 const customStyles = {
   content: {
@@ -140,13 +144,17 @@ class App extends Component {
 
   handleSubmit = async e => {
     e.preventDefault();
-    if (!e.target.checkValidity()) {
+    const todo = this.getValues([...e.target.elements]);
+    if (!e.target.checkValidity() || this.isTooLong(todo.time)) {
       this.notify('Please fill in all the values');
       return;
     }
-    const todo = this.getValues([...e.target.elements]);
     e.target.reset();
     await this.saveTodo(todo);
+  };
+
+  isTooLong = time => {
+    return time > 7200;
   };
 
   getValues = elements => {
@@ -200,6 +208,21 @@ class App extends Component {
     this.closeModal();
   };
 
+  handleClickReorder = (todo, direction) => {
+    const { todos } = this.state;
+    const currentIndex = todos.findIndex(i => i._id === todo._id);
+    const newIndex = currentIndex + direction;
+    if (newIndex < 0 || newIndex > todos.length) {
+      return;
+    }
+    const movedTodo = todos[newIndex];
+
+    todos[newIndex] = todo;
+    todos[currentIndex] = movedTodo;
+
+    this.updateTodos(todos);
+  };
+
   openModal = () => {
     this.setState({ modalIsOpen: true });
   };
@@ -209,19 +232,19 @@ class App extends Component {
   };
 
   render() {
-    const { activeTodos, completedTodos, timer } = this.state;
+    const { activeTodos, completedTodos, timer, todos } = this.state;
     return (
-      <div className="App">
+      <div className="App avenir">
         <header className="App-header">
           <TodoForm customTime={this.state.customTime} handleSubmit={this.handleSubmit} />
-          <div className="controls">
-            <label>Custom time</label>
-            <input type="checkbox" onChange={this.handleToggle} name="custom-time" />
-            <button onClick={this.handleClickCompleted}>
-              Marcar tarea en curso como completada
-            </button>
-            <button onClick={this.handleClickStart}>Comenzar tarea en curso</button>
-            <button onClick={this.handleClickPause}>Pausar tarea en curso</button>
+          <div className="main-controls">
+            <label className="custom-time">
+              Custom time
+              <input type="checkbox" onChange={this.handleToggle} name="custom-time" />
+            </label>
+            <button onClick={this.handleClickCompleted}>Mark todo as completed</button>
+            <button onClick={this.handleClickStart}>Start current todo</button>
+            <button onClick={this.handleClickPause}>Pause current todo</button>
             <Timer time={timer} />
           </div>
         </header>
@@ -233,13 +256,19 @@ class App extends Component {
               todos={activeTodos}
               deleteTodo={this.deleteTodo}
               updateTodo={this.handleClickUpdate}
+              reorderTodo={this.handleClickReorder}
             />
             <TodoList
               title="Completed Todos"
               todos={completedTodos}
               deleteTodo={this.deleteTodo}
               updateTodo={this.handleClickUpdate}
+              reorderTodo={this.handleClickReorder}
             />
+          </div>
+          <div className="graph-container">
+            <h1>Todos of the week</h1>
+            <Graph todos={todos} />
           </div>
           <ToastContainer />
           <Modal

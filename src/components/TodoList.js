@@ -11,6 +11,7 @@ export default class TodoList extends Component {
             <Todo
               deleteTodo={_ => this.props.deleteTodo(todo)}
               updateTodo={_ => this.props.updateTodo(todo)}
+              reorderTodo={this.props.reorderTodo}
               key={index}
               todo={todo}
             />
